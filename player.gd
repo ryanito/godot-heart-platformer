@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @export var movement_data : PlayerMovementData
 
+var air_jump = false
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
@@ -11,6 +12,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 func _physics_process(delta):
 	add_gravity(delta)
 	handle_jump()
+	handle_wall_jump()
 	var direction = Input.get_axis("ui_left", "ui_right")
 	handle_movement(direction, delta)
 	update_animations(direction)
@@ -33,6 +35,9 @@ func add_gravity(delta):
 		
 		
 func handle_jump():
+	if is_on_floor():
+		air_jump = true
+	
 	if is_on_floor() or coyote_jump_timer.time_left > 0:
 		if Input.is_action_just_pressed("ui_accept"):
 			velocity.y = movement_data.jump_velocity
@@ -42,6 +47,24 @@ func handle_jump():
 		
 		if Input.is_action_just_released("ui_accept") and velocity.y < short_jump:
 			velocity.y = short_jump
+			
+		if Input.is_action_just_pressed("ui_accept") and air_jump:
+			velocity.y = movement_data.jump_velocity
+			air_jump = false
+			
+			
+func handle_wall_jump():
+	if not is_on_wall_only():
+		return
+		
+	var wall_normal = get_wall_normal()
+
+	if Input.is_action_just_pressed("ui_accept"):
+		velocity.x = wall_normal.x * movement_data.speed
+		velocity.y = movement_data.jump_velocity
+		
+	air_jump = true
+
 			
 			
 func handle_movement(direction, delta):
@@ -53,8 +76,13 @@ func handle_movement(direction, delta):
 	
 	
 func apply_acceleration(direction, delta):
-	velocity.x = move_toward(velocity.x, movement_data.speed * direction, movement_data.acceleration * delta)
-
+	if direction == 0:
+		return
+		
+	if is_on_floor():
+		velocity.x = move_toward(velocity.x, movement_data.speed * direction, movement_data.acceleration * delta)
+	else:
+		velocity.x = move_toward(velocity.x, movement_data.speed * direction, movement_data.air_acceleration * delta)
 	
 func apply_friction(direction, delta):
 	if is_on_floor():
