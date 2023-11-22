@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://vaso1au7olde"]
+
+[node name="HazardArea" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
