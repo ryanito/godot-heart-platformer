@@ -14,7 +14,7 @@ func _physics_process(delta):
 	add_gravity(delta)
 	handle_jump()
 	handle_wall_jump()
-	var direction = Input.get_axis("ui_left", "ui_right")
+	var direction = Input.get_axis("move_left", "move_right")
 	handle_movement(direction, delta)
 	update_animations(direction)
 	
@@ -23,11 +23,6 @@ func _physics_process(delta):
 	var just_left_ledge = was_on_floor and not is_on_floor() and velocity.y >= 0
 	if just_left_ledge:
 		coyote_jump_timer.start()
-		
-	if Input.is_action_just_pressed("ui_up"):
-		movement_data = load("res://FastMovementData.tres")
-	if Input.is_action_just_pressed("ui_down"):
-		movement_data = load("res://SlowMovementData.tres")
 
 
 func add_gravity(delta):
@@ -40,16 +35,16 @@ func handle_jump():
 		air_jump = true
 	
 	if is_on_floor() or coyote_jump_timer.time_left > 0:
-		if Input.is_action_just_pressed("ui_accept"):
+		if Input.is_action_just_pressed("jump"):
 			velocity.y = movement_data.jump_velocity
 	
 	elif not is_on_floor():
 		var short_jump = movement_data.jump_velocity / 2
 		
-		if Input.is_action_just_released("ui_accept") and velocity.y < short_jump:
+		if Input.is_action_just_released("jump") and velocity.y < short_jump:
 			velocity.y = short_jump
 			
-		if Input.is_action_just_pressed("ui_accept") and air_jump:
+		if Input.is_action_just_pressed("jump") and air_jump:
 			velocity.y = movement_data.jump_velocity
 			air_jump = false
 			
@@ -60,7 +55,7 @@ func handle_wall_jump():
 		
 	var wall_normal = get_wall_normal()
 
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("jump"):
 		velocity.x = wall_normal.x * movement_data.speed
 		velocity.y = movement_data.jump_velocity
 		
