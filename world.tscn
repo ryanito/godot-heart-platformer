@@ -98,6 +98,20 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Start in: 3"
 
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 4.0
+offset_bottom = 13.0
+grow_horizontal = 2
+pivot_offset = Vector2(-136, -16)
+
+[node name="LevelTimeLabel" type="Label" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 6
+
 [node name="LevelTileMap" parent="." instance=ExtResource("5_54re6")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -105,3 +119,6 @@ process_mode = 3
 libraries = {
 "": SubResource("AnimationLibrary_18ehc")
 }
+
+[connection signal="next_level" from="CanvasLayer/LevelCompleted" to="." method="_on_level_completed_next_level"]
+[connection signal="restart" from="CanvasLayer/LevelCompleted" to="." method="_on_level_completed_restart"]
