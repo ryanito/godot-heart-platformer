@@ -2,6 +2,7 @@ extends CenterContainer
 
 @onready var menu_button = $VBoxContainer/MenuButton
 
+
 func _ready():
 	menu_button.grab_focus()
 	LevelTransition.fade_from_black()

@@ -16,7 +16,7 @@ func _ready():
 	if not next_level:
 		level_completed.next_level_button.text = "Victory Screen"
 		next_level = load("res://victory_screen.tscn")
-	
+
 	Events.level_completed.connect(show_level_completed)
 
 	get_tree().paused = true
