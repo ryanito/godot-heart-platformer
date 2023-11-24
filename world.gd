@@ -13,6 +13,10 @@ var start_level_time = 0.0
 
 
 func _ready():
+	if not next_level:
+		level_completed.next_level_button.text = "Victory Screen"
+		next_level = load("res://victory_screen.tscn")
+	
 	Events.level_completed.connect(show_level_completed)
 
 	get_tree().paused = true
@@ -31,7 +35,6 @@ func _process(_delta):
 
 func show_level_completed():
 	level_completed.show()
-	level_completed.restart_button.grab_focus()
 	get_tree().paused = true
 
 
