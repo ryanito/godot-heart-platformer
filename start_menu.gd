@@ -5,6 +5,7 @@ extends CenterContainer
 
 
 func _ready():
+	RenderingServer.set_default_clear_color(Color.BLACK)
 	start_game_button.grab_focus()
 
 
