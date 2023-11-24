@@ -1,7 +1,7 @@
 extends ColorRect
 
-signal restart()
-signal next_level()
+signal restart
+signal next_level
 
 @onready var restart_button = %RestartButton
 

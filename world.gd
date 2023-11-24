@@ -11,29 +11,28 @@ var start_level_time = 0.0
 @onready var animation_player = $AnimationPlayer
 @onready var level_time_label = %LevelTimeLabel
 
+
 func _ready():
 	Events.level_completed.connect(show_level_completed)
-	
+
 	get_tree().paused = true
 	LevelTransition.fade_from_black()
 	animation_player.play("countdown")
 	await animation_player.animation_finished
 	get_tree().paused = false
-	
+
 	start_level_time = Time.get_ticks_msec()
-	
-	
-func _process(delta):
+
+
+func _process(_delta):
 	level_time = Time.get_ticks_msec() - start_level_time
 	level_time_label.text = str(level_time / 1000.0)
-	
-	
+
+
 func show_level_completed():
 	level_completed.show()
 	level_completed.restart_button.grab_focus()
 	get_tree().paused = true
-
-		
 
 
 func _on_level_completed_next_level():
