@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 
 Events="*res://Events.gd"
 LevelTransition="*res://level_transition.tscn"
+HighScores="*res://HighScores.gd"
 
 [display]
 

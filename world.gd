@@ -35,6 +35,12 @@ func _process(_delta):
 
 func show_level_completed():
 	level_completed.show()
+
+	var level_name = get_tree().current_scene.name
+	HighScores.add_time(level_name, level_time)
+	level_completed.set_times(level_time, HighScores.get_best_time(level_name))
+	level_time_label.visible = false
+
 	get_tree().paused = true
 
 
